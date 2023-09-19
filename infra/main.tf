@@ -12,44 +12,48 @@ provider "aws" {
 }
 
 resource "aws_appconfig_application" "main" {
-  name        = "appconfig-golang-api"
-  description = "AppConfig Application for a Golang REST API"
+  name        = "MoviesApp"
+  description = "Watch movies anywhere"
 }
 
-resource "aws_appconfig_configuration_profile" "feature_flags" {
+### Hosted Feature Flags ###
+
+resource "aws_appconfig_configuration_profile" "feature_flags_hosted" {
   application_id = aws_appconfig_application.main.id
-  description    = "Example Configuration Profile"
+  description    = "Feature flags that hosted by AppConfig"
   name           = "Hosted Feature Flags"
   location_uri   = "hosted"
   type           = "AWS.AppConfig.FeatureFlags"
 }
 
-resource "aws_appconfig_hosted_configuration_version" "example" {
+resource "aws_appconfig_hosted_configuration_version" "feature_flags_hosted_v1" {
   application_id           = aws_appconfig_application.main.id
-  configuration_profile_id = aws_appconfig_configuration_profile.feature_flags.configuration_profile_id
+  configuration_profile_id = aws_appconfig_configuration_profile.feature_flags_hosted.configuration_profile_id
   description              = "Example Feature Flag Configuration Version"
   content_type             = "application/json"
 
   content = jsonencode({
     flags : {
-      foo : {
-        name : "foo",
+      blackfriday : {
+        name : "Black Friday Promotion",
+        description : "Discount feature for the Black Friday sales.",
         _deprecation : {
           "status" : "planned"
         }
       },
-      bar : {
-        name : "bar",
+      recommendations : {
+        name : "Smart Recommendations",
+        description : "Movie recommendations feature.",
         attributes : {
-          someAttribute : {
+          itemsQuantity : {
             constraints : {
-              type : "string",
+              type : "number",
               required : true
             }
           },
-          someOtherAttribute : {
+          someAttribute : {
             constraints : {
-              type : "number",
+              type : "string",
               required : true
             }
           }
@@ -57,13 +61,13 @@ resource "aws_appconfig_hosted_configuration_version" "example" {
       }
     },
     values : {
-      foo : {
+      blackfriday : {
         enabled : "true",
       },
-      bar : {
+      recommendations : {
         enabled : "true",
-        someAttribute : "Hello World",
-        someOtherAttribute : 123
+        itemsQuantity : 3,
+        someAttribute : "Hello World"
       }
     },
     version : "1"
