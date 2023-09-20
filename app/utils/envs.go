@@ -5,8 +5,8 @@ import (
 	"strconv"
 )
 
-func GetPort() int {
-	env := os.Getenv("PORT")
+func GetX() int {
+	env := os.Getenv("X")
 	i, err := strconv.Atoi(env)
 	Check(err)
 	return i

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"main/utils"
@@ -17,6 +18,10 @@ func main() {
 	err := godotenv.Load()
 	utils.Check(err)
 
+	// Flags
+	port := flag.Int("port", 8080, "")
+	flag.Parse()
+
 	// Initiate App Config
 	startConfig()
 
@@ -25,7 +30,6 @@ func main() {
 	http.HandleFunc("/config", configResource)
 
 	// Start the HTTP server
-	port := utils.GetPort()
 	addr := fmt.Sprintf(":%d", port)
 	log.Printf("String server on port %v", port)
 	http.ListenAndServe(addr, nil)

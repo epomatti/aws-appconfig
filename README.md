@@ -9,11 +9,7 @@ terraform init
 terraform apply -auto-approve
 ```
 
-Setup the `.env` to start the application:
-
-```sh
-PORT="8080"
-```
+Parameters will be automatically created and referenced by the application.
 
 Start the Go application
 
