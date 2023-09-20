@@ -8,7 +8,8 @@
         "appconfigdata",
         "github",
         "godotenv",
-        "joho"
+        "joho",
+        "moviesapp"
     ],
     "ignoreWords": [],
     "import": []

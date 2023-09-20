@@ -103,3 +103,25 @@ resource "aws_appconfig_deployment" "example" {
   description              = "Terraform production deployment"
   environment_id           = aws_appconfig_environment.production.environment_id
 }
+
+locals {
+  prefix = "/moviesapp/appconfig"
+}
+
+resource "aws_ssm_parameter" "application_id" {
+  name  = "${local.prefix}/application-id"
+  type  = "String"
+  value = aws_appconfig_application.main.id
+}
+
+resource "aws_ssm_parameter" "configuration_profile_id" {
+  name  = "${local.prefix}/configuration-profile-id"
+  type  = "String"
+  value = aws_appconfig_configuration_profile.feature_flags_hosted.configuration_profile_id
+}
+
+resource "aws_ssm_parameter" "environment_id" {
+  name  = "${local.prefix}/environment-id"
+  type  = "String"
+  value = aws_appconfig_environment.production.environment_id
+}

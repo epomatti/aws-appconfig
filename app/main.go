@@ -49,9 +49,8 @@ func startConfig() {
 }
 
 func startSession() *string {
-	appId := utils.GetApplicationIdentifier()
-	configProfileId := utils.GetConfigurationProfileId()
-	environment := utils.GetConfigurationEnvironment()
+
+	params := utils.GetParameters()
 
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	utils.Check(err)
@@ -61,9 +60,9 @@ func startSession() *string {
 
 	client = appconfigdata.NewFromConfig(cfg)
 	input := appconfigdata.StartConfigurationSessionInput{
-		ApplicationIdentifier:                &appId,
-		ConfigurationProfileIdentifier:       &configProfileId,
-		EnvironmentIdentifier:                &environment,
+		ApplicationIdentifier:                &params.AppId,
+		ConfigurationProfileIdentifier:       &params.ConfigProfileId,
+		EnvironmentIdentifier:                &params.EnvId,
 		RequiredMinimumPollIntervalInSeconds: &minInterval,
 	}
 	output, err := client.StartConfigurationSession(context.TODO(), &input)
