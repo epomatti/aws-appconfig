@@ -13,7 +13,7 @@ Parameters will be automatically created and referenced by the application.
 
 Start the Go application:
 
-```
+```sh
 go get
 go run .
 ```
