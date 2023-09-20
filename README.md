@@ -11,7 +11,7 @@ terraform apply -auto-approve
 
 Parameters will be automatically created and referenced by the application.
 
-Start the Go application
+Start the Go application:
 
 ```
 go get
