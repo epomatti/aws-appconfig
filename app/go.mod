@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.40
-	github.com/aws/aws-sdk-go-v2/service/appconfig v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/appconfigdata v1.8.0
 	github.com/joho/godotenv v1.5.1
 )
 

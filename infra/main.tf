@@ -73,3 +73,33 @@ resource "aws_appconfig_hosted_configuration_version" "feature_flags_hosted_v1" 
     version : "1"
   })
 }
+
+resource "aws_appconfig_environment" "production" {
+  name           = "PRODUCTION"
+  description    = "MoviesApp configuration for Production"
+  application_id = aws_appconfig_application.main.id
+
+  # monitor {
+  #   alarm_arn      = aws_cloudwatch_metric_alarm.example.arn
+  #   alarm_role_arn = aws_iam_role.example.arn
+  # }
+}
+
+resource "aws_appconfig_deployment_strategy" "example" {
+  name                           = "Terraform MovieApp"
+  description                    = "Terraform Deployment Strategy"
+  deployment_duration_in_minutes = 0
+  final_bake_time_in_minutes     = 3
+  growth_factor                  = 100
+  growth_type                    = "LINEAR"
+  replicate_to                   = "NONE"
+}
+
+resource "aws_appconfig_deployment" "example" {
+  application_id           = aws_appconfig_application.main.id
+  configuration_profile_id = aws_appconfig_configuration_profile.feature_flags_hosted.configuration_profile_id
+  configuration_version    = aws_appconfig_hosted_configuration_version.feature_flags_hosted_v1.version_number
+  deployment_strategy_id   = aws_appconfig_deployment_strategy.example.id
+  description              = "Terraform production deployment"
+  environment_id           = aws_appconfig_environment.production.environment_id
+}
