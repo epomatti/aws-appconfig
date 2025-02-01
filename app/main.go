@@ -30,8 +30,8 @@ func main() {
 	http.HandleFunc("/config", configResource)
 
 	// Start the HTTP server
-	addr := fmt.Sprintf(":%d", port)
-	log.Printf("String server on port %v", port)
+	addr := fmt.Sprintf(":%d", *port)
+	log.Printf("Staring server on port %v", *port)
 	http.ListenAndServe(addr, nil)
 }
 
@@ -40,9 +40,11 @@ func ok(w http.ResponseWriter, r *http.Request) {
 }
 
 var client *appconfigdata.Client
-var exit = make(chan bool)
+
+// var exit = make(chan bool)
 var token *string
-var nextPollIntervalInSeconds int
+
+// var nextPollIntervalInSeconds int
 var configStr string
 
 func startConfig() {
@@ -59,8 +61,7 @@ func startSession() *string {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	utils.Check(err)
 
-	var minInterval int32
-	minInterval = 15
+	var minInterval int32 = 15
 
 	client = appconfigdata.NewFromConfig(cfg)
 	input := appconfigdata.StartConfigurationSessionInput{

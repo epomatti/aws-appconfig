@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.17.0"
+      version = ">= 5.0.0"
     }
   }
 }
@@ -16,12 +16,10 @@ resource "aws_appconfig_application" "main" {
   description = "Watch movies anywhere"
 }
 
-### Hosted Feature Flags ###
-
 resource "aws_appconfig_configuration_profile" "feature_flags_hosted" {
   application_id = aws_appconfig_application.main.id
-  description    = "Feature flags that hosted by AppConfig"
-  name           = "Hosted Feature Flags"
+  description    = "All the features for my application"
+  name           = "Application Features"
   location_uri   = "hosted"
   type           = "AWS.AppConfig.FeatureFlags"
 }
@@ -70,8 +68,20 @@ resource "aws_appconfig_hosted_configuration_version" "feature_flags_hosted_v1" 
         someAttribute : "Hello World"
       }
     },
-    version : "1"
+    version : "1",
+    versionLabel : "First version of the configuration"
   })
+}
+
+resource "aws_appconfig_environment" "staging" {
+  name           = "STAGING"
+  description    = "MoviesApp configuration for Staging"
+  application_id = aws_appconfig_application.main.id
+
+  # monitor {
+  #   alarm_arn      = aws_cloudwatch_metric_alarm.example.arn
+  #   alarm_role_arn = aws_iam_role.example.arn
+  # }
 }
 
 resource "aws_appconfig_environment" "production" {
@@ -85,22 +95,22 @@ resource "aws_appconfig_environment" "production" {
   # }
 }
 
-resource "aws_appconfig_deployment_strategy" "example" {
-  name                           = "Terraform MovieApp"
-  description                    = "Terraform Deployment Strategy"
+resource "aws_appconfig_deployment_strategy" "super_fast" {
+  name                           = "MovieApp.AllAtOnceNoWait"
+  description                    = "Deploys all at once and does not wait."
   deployment_duration_in_minutes = 0
-  final_bake_time_in_minutes     = 3
+  final_bake_time_in_minutes     = 0
   growth_factor                  = 100
   growth_type                    = "LINEAR"
   replicate_to                   = "NONE"
 }
 
-resource "aws_appconfig_deployment" "example" {
+resource "aws_appconfig_deployment" "first_deployment" {
   application_id           = aws_appconfig_application.main.id
   configuration_profile_id = aws_appconfig_configuration_profile.feature_flags_hosted.configuration_profile_id
   configuration_version    = aws_appconfig_hosted_configuration_version.feature_flags_hosted_v1.version_number
-  deployment_strategy_id   = aws_appconfig_deployment_strategy.example.id
-  description              = "Terraform production deployment"
+  deployment_strategy_id   = aws_appconfig_deployment_strategy.super_fast.id
+  description              = "First deployment of the application"
   environment_id           = aws_appconfig_environment.production.environment_id
 }
 

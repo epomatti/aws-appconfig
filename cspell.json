@@ -6,9 +6,11 @@
     "words": [
         "appconfig",
         "appconfigdata",
+        "blackfriday",
         "configsources",
         "github",
         "godotenv",
+        "hashicorp",
         "imds",
         "joho",
         "moviesapp",

@@ -14,6 +14,8 @@ Parameters will be automatically created and referenced by the application.
 Start the Go application:
 
 ```sh
+touch .env
+
 go get
 go run .
 ```
