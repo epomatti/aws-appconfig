@@ -6,10 +6,13 @@
     "words": [
         "appconfig",
         "appconfigdata",
+        "configsources",
         "github",
         "godotenv",
+        "imds",
         "joho",
-        "moviesapp"
+        "moviesapp",
+        "ssooidc"
     ],
     "ignoreWords": [],
     "import": []
